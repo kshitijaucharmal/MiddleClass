@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 
@@ -21,13 +22,27 @@ public class NPCScript : MonoBehaviour {
     [SerializeField] private List<Conversation> conversations;
     [SerializeField] private TMP_Text dialogueText;
 
+    [SerializeField] private GameObject dialogueTextBox;
+    [SerializeField] private GameObject inputPrompt;
+    [SerializeField] private GameObject acceptButton;
+    [SerializeField] private GameObject rejectButton;
+
     private bool _speaking = false;
     private bool _skipDialogue = false;
+    private bool _questAcceptor = false;
+
     private Transform _player;
 
     // Start is called before the first frame update
     void Start() {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        dialogueTextBox.SetActive(false);
+        inputPrompt.SetActive(false);
+        acceptButton.SetActive(false);
+        rejectButton.SetActive(false);
+
+        GetComponent<QuestGiver>().enabled = false;
     }
 
     // Update is called once per frame
@@ -43,18 +58,47 @@ public class NPCScript : MonoBehaviour {
         var dist = Vector3.Distance(transform.position, _player.position);
         if (dist < playerDetectRange && !_speaking)
         {
-            if (Input.GetButtonDown("StartDialogue"))
+            if (_questAcceptor)
             {
-                _speaking = true;
-                StartCoroutine(SayDialogue(0));
+                if (Input.GetButtonDown("AcceptQuest"))
+                {
+                    Debug.Log("Quest Accepted");
+                    GetComponent<QuestGiver>().GiveQuest();
+                    acceptButton.SetActive(false);
+                    rejectButton.SetActive(false);
+                    Destroy(this);
+                }
+                if (Input.GetButtonDown("RejectQuest"))
+                {
+                    Debug.Log("Quest Rejected");
+                    acceptButton.SetActive(false);
+                    rejectButton.SetActive(false);
+                    Destroy(this);
+                    return;
+                }
             }
-            // Disable Player Movement here
+            else
+            {
+                inputPrompt.SetActive(true);
+                if (Input.GetButtonDown("StartDialogue"))
+                {
+                    dialogueTextBox.SetActive(true);
+                    inputPrompt.SetActive(false);
+                    _speaking = true;
+                    StartCoroutine(SayDialogue(0));
+                }
+                // Disable Player Movement here
+            }
         }
         else if(dist > playerDetectRange && _speaking) {
+            dialogueTextBox.SetActive(false);
+            inputPrompt.SetActive(false);
             _speaking = false;
             dialogueText.text = "";
             StopAllCoroutines();
         }
+        else 
+            inputPrompt.SetActive(false);
 
         if (Input.GetButtonDown("SkipDialogue"))
         {
@@ -78,9 +122,11 @@ public class NPCScript : MonoBehaviour {
         Conversation dialogue = conversations[convoIndex];
         foreach(string line in dialogue.lines) {
             dialogueText.text = "";
+            bool flag = false;
             foreach(char c in line) {
                 if (_skipDialogue)
                 {
+                    flag = true;
                     dialogueText.text = "";
                     break;
                 }
@@ -88,7 +134,16 @@ public class NPCScript : MonoBehaviour {
                 yield return new WaitForSeconds(talkRate);
             }
             _skipDialogue = false;
+            if (flag) yield return null;
             yield return new WaitForSeconds(pauseTime);
         }
+
+        _speaking = false;
+        dialogueTextBox.SetActive(false);
+
+        acceptButton.SetActive(true);
+        rejectButton.SetActive(true);
+
+        _questAcceptor = true;
     }
 }

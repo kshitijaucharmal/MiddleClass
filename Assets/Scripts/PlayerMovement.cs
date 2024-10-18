@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         // Getting input axes for movement
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
         if (direction.magnitude > 0.1f) // Ensure some input is pressed
         {
@@ -48,6 +48,6 @@ public class PlayerMovement : MonoBehaviour
         transform.position += heading * moveSpeed * Time.deltaTime;
 
         // Optionally rotate player to face movement direction
-        transform.forward = heading;
+        transform.forward = Vector3.Lerp(transform.forward, heading, 0.08f);
     }
 }
