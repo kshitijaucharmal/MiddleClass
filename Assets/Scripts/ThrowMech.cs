@@ -51,7 +51,6 @@ public class ThrowMech : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-
         if (other.CompareTag("Throwable"))
         {
             canPick = false; // Reset pickable flag
