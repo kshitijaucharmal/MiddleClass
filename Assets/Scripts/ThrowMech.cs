@@ -34,7 +34,7 @@ public class ThrowMech : MonoBehaviour
         Physics.IgnoreLayerCollision(6, 3, true);
         heldRb = heldObject.GetComponent<Rigidbody>();
         joint = heldObject.AddComponent<SpringJoint>();
-                
+        
 
         heldObject.GetComponent<Rigidbody>().isKinematic = true;
         
