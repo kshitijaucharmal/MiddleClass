@@ -21,6 +21,9 @@ public class NPCScript : MonoBehaviour {
     [SerializeField] private List<Conversation> conversations;
     [SerializeField] private TMP_Text dialogueText;
 
+    [SerializeField] private GameObject dialogueTextBox;
+    [SerializeField] private GameObject inputPrompt;
+
     private bool _speaking = false;
     private bool _skipDialogue = false;
     private Transform _player;
@@ -28,6 +31,8 @@ public class NPCScript : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        dialogueTextBox.SetActive(false);
+        inputPrompt.SetActive(false);
     }
 
     // Update is called once per frame
@@ -43,14 +48,19 @@ public class NPCScript : MonoBehaviour {
         var dist = Vector3.Distance(transform.position, _player.position);
         if (dist < playerDetectRange && !_speaking)
         {
+            inputPrompt.SetActive(true);
             if (Input.GetButtonDown("StartDialogue"))
             {
+                dialogueTextBox.SetActive(true);
+                inputPrompt.SetActive(false);
                 _speaking = true;
                 StartCoroutine(SayDialogue(0));
             }
             // Disable Player Movement here
         }
         else if(dist > playerDetectRange && _speaking) {
+            dialogueTextBox.SetActive(false);
+            inputPrompt.SetActive(false);
             _speaking = false;
             dialogueText.text = "";
             StopAllCoroutines();
@@ -78,9 +88,11 @@ public class NPCScript : MonoBehaviour {
         Conversation dialogue = conversations[convoIndex];
         foreach(string line in dialogue.lines) {
             dialogueText.text = "";
+            bool flag = false;
             foreach(char c in line) {
                 if (_skipDialogue)
                 {
+                    flag = true;
                     dialogueText.text = "";
                     break;
                 }
@@ -88,6 +100,7 @@ public class NPCScript : MonoBehaviour {
                 yield return new WaitForSeconds(talkRate);
             }
             _skipDialogue = false;
+            if (flag) yield return null;
             yield return new WaitForSeconds(pauseTime);
         }
     }
