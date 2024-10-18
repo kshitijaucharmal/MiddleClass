@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 
@@ -23,16 +24,24 @@ public class NPCScript : MonoBehaviour {
 
     [SerializeField] private GameObject dialogueTextBox;
     [SerializeField] private GameObject inputPrompt;
+    [SerializeField] private GameObject acceptButton;
+    [SerializeField] private GameObject rejectButton;
 
     private bool _speaking = false;
     private bool _skipDialogue = false;
+    private bool _questAcceptor = false;
+
     private Transform _player;
 
     // Start is called before the first frame update
     void Start() {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+
         dialogueTextBox.SetActive(false);
         inputPrompt.SetActive(false);
+        acceptButton.SetActive(false);
+        rejectButton.SetActive(false);
+
         GetComponent<QuestGiver>().enabled = false;
     }
 
@@ -49,15 +58,37 @@ public class NPCScript : MonoBehaviour {
         var dist = Vector3.Distance(transform.position, _player.position);
         if (dist < playerDetectRange && !_speaking)
         {
-            inputPrompt.SetActive(true);
-            if (Input.GetButtonDown("StartDialogue"))
+            if (_questAcceptor)
             {
-                dialogueTextBox.SetActive(true);
-                inputPrompt.SetActive(false);
-                _speaking = true;
-                StartCoroutine(SayDialogue(0));
+                if (Input.GetButtonDown("AcceptQuest"))
+                {
+                    Debug.Log("Quest Accepted");
+                    GetComponent<QuestGiver>().GiveQuest();
+                    acceptButton.SetActive(false);
+                    rejectButton.SetActive(false);
+                    Destroy(this);
+                }
+                if (Input.GetButtonDown("RejectQuest"))
+                {
+                    Debug.Log("Quest Rejected");
+                    acceptButton.SetActive(false);
+                    rejectButton.SetActive(false);
+                    Destroy(this);
+                    return;
+                }
             }
-            // Disable Player Movement here
+            else
+            {
+                inputPrompt.SetActive(true);
+                if (Input.GetButtonDown("StartDialogue"))
+                {
+                    dialogueTextBox.SetActive(true);
+                    inputPrompt.SetActive(false);
+                    _speaking = true;
+                    StartCoroutine(SayDialogue(0));
+                }
+                // Disable Player Movement here
+            }
         }
         else if(dist > playerDetectRange && _speaking) {
             dialogueTextBox.SetActive(false);
@@ -107,8 +138,12 @@ public class NPCScript : MonoBehaviour {
             yield return new WaitForSeconds(pauseTime);
         }
 
+        _speaking = false;
         dialogueTextBox.SetActive(false);
-        // Done with dialogue, give quest
-        GetComponent<QuestGiver>().enabled = true;
+
+        acceptButton.SetActive(true);
+        rejectButton.SetActive(true);
+
+        _questAcceptor = true;
     }
 }

@@ -9,8 +9,6 @@ public class QuestGiver : MonoBehaviour
     [SerializeField] private Action<Quest> questStart;
     [SerializeField] private Action<Quest> questEnd;
 
-    [SerializeField] private GameObject acceptButton;
-    [SerializeField] private GameObject rejectButton;
 
     // Start is called before the first frame update
     void Start()
