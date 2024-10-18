@@ -6,7 +6,7 @@ public class ThrowMech : MonoBehaviour
 {
     public GameObject hand;
     public float throwForce = 1000f;
-    public float upWardThrowForce = 1000f;
+    public float upWardThrowForce = 10000f;
     private GameObject heldObject = null;
     private Rigidbody heldRb;
     private CharacterJoint joint = null;
@@ -18,14 +18,8 @@ public class ThrowMech : MonoBehaviour
         Physics.IgnoreLayerCollision(3, 6, false);
 
         Destroy(joint);
-       
-
-
-
         Vector3 forceToAdd = gameObject.transform.up * upWardThrowForce + hand.transform.forward * throwForce;
         heldRb.AddForce(forceToAdd, ForceMode.Force);
-
-
         heldObject = null;
         heldRb = null;
         pickedup = false;
