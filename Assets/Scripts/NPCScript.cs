@@ -33,6 +33,7 @@ public class NPCScript : MonoBehaviour {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         dialogueTextBox.SetActive(false);
         inputPrompt.SetActive(false);
+        GetComponent<QuestGiver>().enabled = false;
     }
 
     // Update is called once per frame
@@ -65,6 +66,8 @@ public class NPCScript : MonoBehaviour {
             dialogueText.text = "";
             StopAllCoroutines();
         }
+        else 
+            inputPrompt.SetActive(false);
 
         if (Input.GetButtonDown("SkipDialogue"))
         {
@@ -103,5 +106,9 @@ public class NPCScript : MonoBehaviour {
             if (flag) yield return null;
             yield return new WaitForSeconds(pauseTime);
         }
+
+        dialogueTextBox.SetActive(false);
+        // Done with dialogue, give quest
+        GetComponent<QuestGiver>().enabled = true;
     }
 }

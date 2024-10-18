@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class Quest : MonoBehaviour
+[System.Serializable]
+public class Quest
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string questTitle = "Sample Quest";
+    public string questDescription = "Fetch Some Item";
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isActive = false;
 }
