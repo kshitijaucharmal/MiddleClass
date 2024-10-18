@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f; // Speed of the player
     private Vector3 forward, right; // Movement directions
+    private Animator animator;
 
     void Start()
     {
@@ -15,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
         right = Camera.main.transform.right;
         right.y = 0;
         right = Vector3.Normalize(right);
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -25,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
         if (direction.magnitude > 0.1f) // Ensure some input is pressed
         {
             Move(direction);
+            animator.SetBool("walking", true);
+        }
+        else
+        {
+            animator.SetBool("walking", false);
         }
     }
 
