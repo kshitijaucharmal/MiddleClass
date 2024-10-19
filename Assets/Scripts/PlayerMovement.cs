@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -5,7 +6,30 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f; // Speed of the player
     private Vector3 forward, right; // Movement directions
     private Animator animator;
+    public GameObject particles;
+    List<Collider> ragdollcolliders = new List<Collider>();
+    void Awake(){
+ //setRagdollColliders();
+    }
+    void setRagdollColliders(){
+        Collider[] colliders = this.gameObject.GetComponentsInChildren<Collider>();
+        foreach(Collider c in colliders){
+            if(c.gameObject != this.gameObject){
+                c.isTrigger = true;
+                ragdollcolliders.Add(c);
+                
+            }
+        }
 
+    }
+    public void turnRagdollOn(){
+        this.gameObject.GetComponent<CapsuleCollider>().enabled = false; 
+        animator.enabled = false;
+        foreach(Collider c in ragdollcolliders){
+            c.isTrigger = false;
+            c.attachedRigidbody.velocity = Vector3.zero;
+        }
+    }
     void Start()
     {
         // Setting up movement directions according to isometric perspective
@@ -33,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             animator.SetBool("walking", false);
+            particles.SetActive(false);
         }
     }
 
@@ -49,5 +74,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Optionally rotate player to face movement direction
         transform.forward = heading;
+        particles.SetActive(true);
     }
 }

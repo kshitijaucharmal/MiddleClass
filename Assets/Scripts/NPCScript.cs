@@ -27,6 +27,8 @@ public class NPCScript : MonoBehaviour {
     [SerializeField] private GameObject acceptButton;
     [SerializeField] private GameObject rejectButton;
 
+    [SerializeField] private Animator animator;
+
     private bool _speaking = false;
     private bool _skipDialogue = false;
     private bool _questAcceptor = false;
@@ -83,6 +85,7 @@ public class NPCScript : MonoBehaviour {
                     dialogueTextBox.SetActive(true);
                     inputPrompt.SetActive(false);
                     _speaking = true;
+                    animator.SetBool("talking", true);
                     StartCoroutine(SayDialogue(0));
                 }
                 // Disable Player Movement here
@@ -92,6 +95,7 @@ public class NPCScript : MonoBehaviour {
             dialogueTextBox.SetActive(false);
             inputPrompt.SetActive(false);
             _speaking = false;
+            animator.SetBool("talking", false);
             dialogueText.text = "";
             StopAllCoroutines();
         }
@@ -120,23 +124,21 @@ public class NPCScript : MonoBehaviour {
         Conversation dialogue = conversations[convoIndex];
         foreach(string line in dialogue.lines) {
             dialogueText.text = "";
-            bool flag = false;
             foreach(char c in line) {
                 if (_skipDialogue)
                 {
-                    flag = true;
-                    dialogueText.text = "";
+                    dialogueText.text = line;
                     break;
                 }
                 dialogueText.text += c;
                 yield return new WaitForSeconds(talkRate);
             }
             _skipDialogue = false;
-            if (flag) yield return null;
             yield return new WaitForSeconds(pauseTime);
         }
 
         _speaking = false;
+         animator.SetBool("talking", false);
         dialogueTextBox.SetActive(false);
 
         acceptButton.SetActive(true);
