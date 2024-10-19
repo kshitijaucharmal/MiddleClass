@@ -6,21 +6,26 @@ public class RigidbodyControl : MonoBehaviour
 {
     // Variable to store the object the player interacts with
     private Rigidbody grabbedRigidbody;
-
+    bool done  = false;
     // Trigger to make the object static
     private void OnTriggerEnter(Collider other)
     {
         // Check if the object has a Rigidbody component
         Rigidbody rb = other.GetComponent<Rigidbody>();
-        if (rb != null)
+
+        if (rb != null && other.CompareTag("Throwable") && done==false)
         {
             // Disable the Rigidbody and make the object static
             rb.isKinematic = true;
             rb.useGravity = false;
-
+            
+            
+            done = true;
             // Reset the rotation to make it erect
-            other.transform.rotation = Quaternion.Euler(0f, 0f, 0f);  // Erect rotation on all axes
-
+            other.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+              // Erect rotation on all axes
+            other.transform.position = transform.position;
+            rb.isKinematic = false;
             Debug.Log("Object Static");
         }
     }
@@ -34,21 +39,9 @@ public class RigidbodyControl : MonoBehaviour
             // Re-enable the Rigidbody when the player grabs it again
             rb.isKinematic = false;
             rb.useGravity = true;
-
+            done  = false;
             Debug.Log("Object Dynamic");
         }
     }
 
-    //// Method to grab and release the object (can be used when the player grabs the object)
-    //public void GrabObject(GameObject obj)
-    //{
-    //    Rigidbody rb = obj.GetComponent<Rigidbody>();
-    //    if (rb != null)
-    //    {
-    //        grabbedRigidbody = rb;
-    //        rb.isKinematic = false;  // Make it dynamic again
-
-    //        Debug.Log("Object Dynamic");
-    //    }
-    //}
 }
