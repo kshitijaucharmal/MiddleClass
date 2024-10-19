@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class RoofScript : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private GameObject roofobject;
+
+    private void Start()
+    {
+        roofobject = GameObject.FindGameObjectWithTag("Roof");
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            transform.rotation = Quaternion.Euler(180, 0, 0);
+            if (roofobject)
+            {
+                roofobject.SetActive(false);
+            }
+            Debug.Log("Entered");
         }
     }
 
@@ -18,13 +27,15 @@ public class RoofScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            transform.rotation =Quaternion.Euler(0, 0, 0);
+            if (roofobject)
+            {
+                roofobject.SetActive(true);
+            }
+            Debug.Log("Exited");
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
     }
 }
