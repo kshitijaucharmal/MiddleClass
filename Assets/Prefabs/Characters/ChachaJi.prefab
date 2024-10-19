@@ -1280,9 +1280,11 @@ GameObject:
   - component: {fileID: 8424801544626291596}
   - component: {fileID: 6251474265202557395}
   - component: {fileID: 5831791986994218715}
+  - component: {fileID: 6166745385064713367}
+  - component: {fileID: 8600327115913042597}
   m_Layer: 0
   m_Name: ChachaJi
-  m_TagString: Untagged
+  m_TagString: Chacha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1319,7 +1321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDetectRange: 1.2
-  talkRate: 0.2
+  talkRate: 0.15
   pauseTime: 0.7
   conversations:
   - conversationTopic: Chachaji
@@ -1372,6 +1374,54 @@ MonoBehaviour:
     questDescription: Throw Garbage Can Outside The Building
     reward: respect
     isActive: 0
+--- !u!65 &6166745385064713367
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8372689277458673074}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.905478, y: 1.5661482, z: 1.0217749}
+  m_Center: {x: 0.047261, y: 0.5371149, z: -0.010887444}
+--- !u!54 &8600327115913042597
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8372689277458673074}
+  serializedVersion: 4
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8613516561658427029
 GameObject:
   m_ObjectHideFlags: 0

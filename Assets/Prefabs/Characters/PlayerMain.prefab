@@ -6278,7 +6278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8681557833156169238}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.7071079}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 1.2347043, y: 7.948737, z: -6.9208426}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6387,7 +6387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 8799149368128675637}
-  throwForce: 150
+  throwForce: 30
   upWardThrowForce: 0
   pickPoint: {fileID: 4743356896771271128}
 --- !u!1 &8702343812841077212

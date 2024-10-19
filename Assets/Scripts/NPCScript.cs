@@ -124,19 +124,16 @@ public class NPCScript : MonoBehaviour {
         Conversation dialogue = conversations[convoIndex];
         foreach(string line in dialogue.lines) {
             dialogueText.text = "";
-            bool flag = false;
             foreach(char c in line) {
                 if (_skipDialogue)
                 {
-                    flag = true;
-                    dialogueText.text = "";
+                    dialogueText.text = line;
                     break;
                 }
                 dialogueText.text += c;
                 yield return new WaitForSeconds(talkRate);
             }
             _skipDialogue = false;
-            if (flag) yield return null;
             yield return new WaitForSeconds(pauseTime);
         }
 
