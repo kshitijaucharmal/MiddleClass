@@ -1479,16 +1479,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd32373191489e4f9657adcd0f78bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDetectRange: 1.5
-  talkRate: 0.05
-  pauseTime: 0.3
+  playerDetectRange: 1.2
+  talkRate: 0.2
+  pauseTime: 0.7
   conversations:
-  - conversationTopic: Cylinder Quest
+  - conversationTopic: Battery Quest
     lines:
-    - Hey There! Can you hear me!!
-    - Don't just ignore a neighbor you fool
-    - I'm sick, fetch a cylinder from below
-    - Where you ask? Just take left after going out of the Chawl
+    - ' Oye! Sunn rahe ho ki nahi?'
+    - Dost ko ignore nahi karte yaar!
+    - Jaldi se ek battery le ke aao neeche se.
+    - Kahan? Pata nahi, lagta hai kahin basement mein hoga
+    - Jaldi lao, mujhe TV dekhna hai !!
   dialogueText: {fileID: 8850065314190328975}
   dialogueTextBox: {fileID: 170938630303120386}
   inputPrompt: {fileID: 4780638896778228427}
@@ -1508,10 +1509,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quest:
-    questId: q_sample_quest
-    questTitle: Fetch Cylinder
-    questDescription: Fetch the cylinder from the Cylinder Ka Dukaan
-    reward: 1 key
+    questId: q_battery_fetch
+    questTitle: Fetch Battery for Lassi
+    questDescription: Fetch a AA Battery from the floor Below
+    reward: battery
     isActive: 0
 --- !u!95 &5452508686373260653
 Animator:
