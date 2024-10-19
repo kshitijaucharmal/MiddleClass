@@ -4,49 +4,47 @@ using UnityEngine;
 
 public class ThrowMech : MonoBehaviour
 {
-    public GameObject hand;
-    public float throwForce = 1000f;
-    public float upWardThrowForce = 10000f;
+    [SerializeField] private Transform hand;
+    public float throwForce = 70f;
+    public float upWardThrowForce = 0f;
     private GameObject heldObject = null;
     private Rigidbody heldRb;
-    private CharacterJoint joint = null;
+    [SerializeField] private Transform pickPoint;
     bool canPick = false;
     bool pickedup = false;
+
+    private Vector3 forceToAdd;
 
     void throwobj()
     {
         Physics.IgnoreLayerCollision(3, 6, false);
 
-        Destroy(joint);
-        Vector3 forceToAdd = gameObject.transform.up * upWardThrowForce + hand.transform.forward * throwForce;
-        heldRb.AddForce(forceToAdd, ForceMode.Force);
+        heldObject.transform.SetParent(null);
+        forceToAdd = hand.forward * throwForce;
+        heldRb.isKinematic = false;
+        heldRb.useGravity = true;
+        heldRb.AddForce(forceToAdd, ForceMode.Impulse);
         heldObject = null;
-        heldRb = null;
         pickedup = false;
     }
     void pick()
     {
+        if (!canPick) return;
         Physics.IgnoreLayerCollision(3, 6, true);
         heldRb = heldObject.GetComponent<Rigidbody>();
-        heldObject.transform.position = hand.transform.position + new Vector3(0, -0.5f, 0);
-        joint = hand.AddComponent<CharacterJoint>();
-        joint.connectedBody = heldRb;
-        joint.anchor = hand.transform.localPosition;
-        joint.projectionDistance = 0.5f;
-        joint.projectionAngle = 90;
-        joint.swingAxis = new Vector3(1, 1, 1);
-        print("Physics Disabled");
+        heldObject.transform.SetParent(transform);
+        heldObject.transform.localPosition = pickPoint.localPosition;
+        heldRb.isKinematic = true;
+        heldRb.useGravity = false;
         pickedup = true;
         print("Picked up");
     }
     void OnTriggerEnter(Collider other)
     {
-        if (heldObject == null && other.gameObject.CompareTag("Throwable"))
+        if (other.CompareTag("Throwable"))
         {
             canPick = true;
             heldObject = other.gameObject;
-            print("Trigered");
-
         }
     }
     void OnTriggerExit(Collider other)
@@ -54,14 +52,13 @@ public class ThrowMech : MonoBehaviour
         if (other.CompareTag("Throwable"))
         {
             canPick = false; // Reset pickable flag
-            heldObject = null; // Clear held object
-            print("Exit");
+            // heldObject = null; // Clear held object
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetButtonDown("Grab"))
         {
             if (pickedup)
             {
@@ -71,8 +68,6 @@ public class ThrowMech : MonoBehaviour
             {
                 pick();
             }
-
-
         }
     }
 }
