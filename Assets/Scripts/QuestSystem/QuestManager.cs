@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -49,4 +48,17 @@ public class QuestManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void EndQuest(string questId)
+    {
+        foreach(Quest quest in activeQuests)
+        {
+            if(quest.questId == questId)
+            {
+                RemoveQuest(quest);
+                Debug.Log(quest.questTitle + " Completed");
+
+                Debug.Log("Gained Reward: " + quest.reward);
+            }
+        }
+    }
 }

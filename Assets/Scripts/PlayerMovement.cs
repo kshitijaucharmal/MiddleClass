@@ -48,6 +48,6 @@ public class PlayerMovement : MonoBehaviour
         transform.position += heading * moveSpeed * Time.deltaTime;
 
         // Optionally rotate player to face movement direction
-        transform.forward = Vector3.Lerp(transform.forward, heading, 0.08f);
+        transform.forward = heading;
     }
 }

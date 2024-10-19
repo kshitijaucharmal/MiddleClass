@@ -17,16 +17,6 @@ public class QuestGiver : MonoBehaviour
         questEnd += QuestCleanup;
     }
 
-    void AcceptQuest()
-    {
-        
-    }
-
-    void RejectQuest()
-    {
-
-    }
-
     void QuestSetup(Quest quest) {
         Debug.Log("Setup Quest");
         QuestManager.Instance.AddQuest(quest);

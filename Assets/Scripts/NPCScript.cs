@@ -41,8 +41,6 @@ public class NPCScript : MonoBehaviour {
         inputPrompt.SetActive(false);
         acceptButton.SetActive(false);
         rejectButton.SetActive(false);
-
-        GetComponent<QuestGiver>().enabled = false;
     }
 
     // Update is called once per frame
